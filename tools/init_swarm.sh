@@ -95,23 +95,23 @@ sleep 2;
 ssh -o "StrictHostKeyChecking no" -i "$cert" ${user}@${manager_ip_1} sudo docker node ls
 
 #scp everything over
-scp -i "$cert" -r ../../docker-swarm-cicd/ ${user}@${manager_ip_1}:/home/${user}/
+scp -i "$cert" -r ../../swarm-pipeline/ ${user}@${manager_ip_1}:/home/${user}/
 
 ssh -o "StrictHostKeyChecking no" -i "$cert" ${user}@${manager_ip_1} \
   bash -c " :
   sudo chmod 777 /var/run/docker.sock
-  cd /home/$user/docker-swarm-cicd/viz/ && make"
+  cd /home/$user/swarm-pipeline/viz/ && make"
 
 while [[ ! `curl -sf http://${manager_ip_1}:5100` ]]; do echo "INFO: Starting Viz"; sleep 5; done
 open http://${manager_ip_1}:5100
 
 #scp new configs
-scp -i "$cert" -r ../../docker-swarm-cicd/tools ${user}@${manager_ip_1}:/home/${user}/docker-swarm-cicd/
+scp -i "$cert" -r ../../swarm-pipeline/tools ${user}@${manager_ip_1}:/home/${user}/swarm-pipeline/
 
 #create network
 ssh -o "StrictHostKeyChecking no" -i "$cert" ${user}@${manager_ip_1} \
   bash -c " :
-  cd /home/$user/docker-swarm-cicd/tools/ && make network;"
+  cd /home/$user/swarm-pipeline/tools/ && make network;"
 
 #prompt to login to Docker
 ssh -o "StrictHostKeyChecking no" -t -i "$cert" ${user}@${manager_ip_1} \
@@ -121,7 +121,7 @@ ssh -o "StrictHostKeyChecking no" -t -i "$cert" ${user}@${manager_ip_1} \
 #pull and deploy the dockerized demo app
 ssh -o "StrictHostKeyChecking no" -i "$cert" ${user}@${manager_ip_1} \
   bash -c " :
-  cd /home/$user/docker-swarm-cicd/tools/ && bash provision_docker_build.sh lmeshoo dockerfile-example"
+  cd /home/$user/swarm-pipeline/tools/ && bash provision_docker_build.sh lmeshoo dockerfile-example"
 
 open http://${manager_ip_1}:5000
 
