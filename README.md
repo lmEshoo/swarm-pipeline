@@ -1,5 +1,7 @@
 # docker-swarm-cicd
 
+![simple_cicd](https://user-images.githubusercontent.com/3256544/27766479-ddbe89e4-5e85-11e7-9406-4429615377c8.png)
+
 ## USAGE
 
 ```
