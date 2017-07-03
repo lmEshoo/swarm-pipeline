@@ -121,6 +121,7 @@ ssh -o "StrictHostKeyChecking no" -t -i "$cert" ${user}@${manager_ip_1} \
 #pull and deploy the dockerized demo app
 ssh -o "StrictHostKeyChecking no" -i "$cert" ${user}@${manager_ip_1} \
   bash -c " :
+  cd /home/$user && git clone https://github.com/lmEshoo/sample-go-app.git;
   cd /home/$user/swarm-pipeline/tools/ && bash provision_docker_build.sh lmeshoo dockerfile-example"
 
 open http://${manager_ip_1}:5000
